@@ -479,9 +479,11 @@ void __show_regs(struct pt_regs *regs)
 #ifdef CONFIG_CPU_CP15_MMU
 		{
 			unsigned int transbase, dac;
-			asm("mrc p15, 0, %0, c2, c0\n\t"
+			asm volatile (
+		            "mrc p15, 0, %0, c2, c0\n\t"
 			    "mrc p15, 0, %1, c3, c0\n"
-			    : "=r" (transbase), "=r" (dac));
+			    : "=r" (transbase), "=r" (dac)
+			);
 			snprintf(buf, sizeof(buf), "  Table: %08x  DAC: %08x",
 			  	transbase, dac);
 #ifdef CONFIG_LGE_HANDLE_PANIC
